@@ -1,0 +1,2 @@
+# Minify
+Personal Finance Application
