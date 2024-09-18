@@ -10,7 +10,7 @@ const Onboarding = () => {
     const swiperRef = useRef<Swiper>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
-    // const isLastSlide = activeIndex === onboarding.length - 1;
+    const isLastSlide = activeIndex === onboarding.length - 1;
 
     return (
         <SafeAreaView className="flex h-full items-center justify-between bg-white">
