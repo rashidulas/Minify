@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import InputField from "@/components/InputField";
 
+// showing images, id, name
 const Profile = () => {
   const { user } = useUser();
 
