@@ -1,73 +1,88 @@
-import { icons } from '@/constants';
-import { useAuth } from '@clerk/clerk-expo';
-import { router } from 'expo-router';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useUser } from "@clerk/clerk-expo";
+import { Image, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import InputField from "@/components/InputField";
 
 const Profile = () => {
-  const { signOut } = useAuth();
-
-  const handleSignOut = () => {
-    signOut();
-    router.replace("/(auth)/sign-in");
-  };
-
-  // Mock data for profile (replace with real data from your app)
-  const profileData = {
-    username: "Enjelin Morgeana",
-    handle: "@enjelin_morgeana",
-  };
+  const { user } = useUser();
 
   return (
-    <SafeAreaView className="bg-[#e5f4f1] flex-1">
-      <View className="p-4 items-center">
-        {/* Profile Header */}
-        <Text className="text-lg font-semibold mb-2">Profile</Text>
-
-        {/* Profile Image */}
-        {/* <Image
-          source={require("")} // Replace with actual avatar image
-          className="w-20 h-20 rounded-full"
-        /> */}
-
-        {/* Username and Handle */}
-        <Text className="text-xl font-bold mt-2">{profileData.username}</Text>
-        <Text className="text-gray-500">{profileData.handle}</Text>
-      </View>
-
-      {/* Profile Options */}
-      <View className="mt-6 space-y-4">
-        <ProfileOption icon={icons.profile} label="Invite Friends" />
-        <ProfileOption icon={icons.search} label="Account info" />
-        <ProfileOption icon={icons.profile} label="Personal profile" />
-        <ProfileOption icon={icons.pin} label="Message center" />
-        <ProfileOption icon={icons.point} label="Login and security" />
-        <ProfileOption icon={icons.email} label="Data and privacy" />
-      </View>
-
-      {/* Sign Out button */}
-      <TouchableOpacity
-        onPress={handleSignOut}
-        className="mt-auto mb-4 p-4 rounded-full bg-red-500 flex-row justify-center items-center mx-4"
+    <SafeAreaView className="flex-1">
+      <ScrollView
+        className="px-5"
+        contentContainerStyle={{ paddingBottom: 120 }}
       >
-        <Image source={icons.out} className="w-4 h-4 mr-2" />
-        <Text className="text-white">Sign Out</Text>
-      </TouchableOpacity>
+        <Text className="text-2xl font-JakartaBold my-5">My profile</Text>
+
+        <View className="flex items-center justify-center my-5">
+          <Image
+            source={{
+              uri: user?.externalAccounts[0]?.imageUrl ?? user?.imageUrl,
+            }}
+            style={{ width: 110, height: 110, borderRadius: 110 / 2 }}
+            className=" rounded-full h-[110px] w-[110px] border-[3px] border-white shadow-sm shadow-neutral-300"
+          />
+        </View>
+
+        <View className="flex flex-col items-start justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 px-5 py-3">
+          <View className="flex flex-col items-start justify-start w-full">
+            <InputField
+              label="First name"
+              placeholder={user?.firstName || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Last name"
+              placeholder={user?.lastName || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Email"
+              placeholder={
+                user?.primaryEmailAddress?.emailAddress || "Not Found"
+              }
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+
+            <InputField
+              label="Phone"
+              placeholder={user?.primaryPhoneNumber?.phoneNumber || "Not Found"}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={false}
+            />
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-// Reusable component for each profile option
-interface ProfileOptionProps {
-  icon: any; // Replace 'any' with the appropriate type if known
-  label: string;
-}
-
-const ProfileOption: React.FC<ProfileOptionProps> = ({ icon, label }) => (
-  <TouchableOpacity className="flex-row items-center p-4 bg-white mx-4 rounded-lg shadow">
-    <Image source={icon} className="w-6 h-6 mr-4" />
-    <Text className="text-lg">{label}</Text>
-  </TouchableOpacity>
-);
-
 export default Profile;
+   
+   
+   // const { signOut } = useAuth();
+    
+    // const handleSignOut = () => {
+    //     signOut();
+    //     router.replace("/(auth)/sign-in");
+    //   };
+      
+
+
+    //         {/* Sign Out button */}
+    //         <TouchableOpacity
+    //             onPress={handleSignOut}
+    //             className="justify-center items-center w-10 h-10 rounded-full bg-white"
+    //           >
+    //             <Image source={icons.out} className="w-4 h-4" />
+    //           </TouchableOpacity>
