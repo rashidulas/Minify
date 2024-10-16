@@ -1,22 +1,24 @@
 import { neon } from '@neondatabase/serverless';
 
 export async function POST(request: Request) {
-
-    try{
+    try {
         const sql = neon(`${process.env.DATABASE_URL}`);
-        const { name, email, clerkId } = await request.json();
+        const { firstName, lastName, clerkId } = await request.json();
 
-        if(!name || !email || !clerkId) {
-            return Response.json({ error: 'Missing required fields' }, { status: 400 });
+        if (!firstName || !lastName || !clerkId) {
+            return new Response(
+                JSON.stringify({ error: 'Missing required fields' }),
+                { status: 400 }
+            );
         }
 
         const response = await sql`
-            INSERT INTO users (name, email, clerk_id)
-            VALUES (${name}, ${email}, ${clerkId})`;
+            INSERT INTO users (firstName, lastName, clerk_id)
+            VALUES (${firstName}, ${lastName}, ${clerkId})`;
 
-        return new Response(JSON.stringify(response), { status: 201, });
+        return new Response(JSON.stringify(response), { status: 201 });
     } catch (error) {
-        console.log(error);
-        return Response.json( {error: error}, { status: 500 });
+        console.error(error);
+        return new Response(JSON.stringify({ error }), { status: 500 });
     }
 }

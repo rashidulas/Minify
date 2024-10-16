@@ -47,7 +47,8 @@ export const tokenCache = {
             await fetchAPI("/(api)/user", {
               method: "POST",
               body: JSON.stringify({
-                name: `${signUp.firstName} ${signUp.lastName}`,
+                firstName: `${signUp.firstName}`, 
+                lastName: `${signUp.lastName}`,
                 email: signUp.emailAddress,
                 clerkId: signUp.createdUserId,
                 // need to add other fields

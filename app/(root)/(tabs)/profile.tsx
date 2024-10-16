@@ -1,12 +1,20 @@
-import { useUser } from "@clerk/clerk-expo";
-import { Image, ScrollView, Text, View } from "react-native";
+import { useAuth, useUser } from "@clerk/clerk-expo";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import InputField from "@/components/InputField";
+import { router } from "expo-router";
+import { icons } from "@/constants";
 
 // showing images, id, name
 const Profile = () => {
   const { user } = useUser();
+  const { signOut } = useAuth();
+    
+  const handleSignOut = () => {
+    signOut();
+    router.replace("/(auth)/sign-in");
+  };
 
   return (
     <SafeAreaView className="flex-1">
@@ -25,6 +33,11 @@ const Profile = () => {
             className=" rounded-full h-[110px] w-[110px] border-[3px] border-white shadow-sm shadow-neutral-300"
           />
         </View>
+        {/* Sign Out button */}
+      <TouchableOpacity
+        onPress={handleSignOut} className="justify-center items-center w-10 h-10 rounded-full bg-white">
+        <Image source={icons.out} className="w-4 h-4" />
+      </TouchableOpacity>
 
         <View className="flex flex-col items-start justify-center bg-white rounded-lg shadow-sm shadow-neutral-300 px-5 py-3">
           <View className="flex flex-col items-start justify-start w-full">
@@ -69,21 +82,7 @@ const Profile = () => {
 };
 
 export default Profile;
-   
-   
-   // const { signOut } = useAuth();
-    
-    // const handleSignOut = () => {
-    //     signOut();
-    //     router.replace("/(auth)/sign-in");
-    //   };
       
 
 
-    //         {/* Sign Out button */}
-    //         <TouchableOpacity
-    //             onPress={handleSignOut}
-    //             className="justify-center items-center w-10 h-10 rounded-full bg-white"
-    //           >
-    //             <Image source={icons.out} className="w-4 h-4" />
-    //           </TouchableOpacity>
+            
